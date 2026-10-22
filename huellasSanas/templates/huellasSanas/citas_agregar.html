@@ -1,0 +1,118 @@
+HTML
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendar cita | Huellas Sanas</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            padding: 35px 16px;
+            background: #f5f7f5;
+            color: #26352d;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 580px;
+            margin: 20px auto;
+            background: white;
+            border: 1px solid #e3e9e4;
+            border-radius: 16px;
+            padding: 32px;
+        }
+        a { color: #26745b; text-decoration: none; }
+        h1 { margin-bottom: 8px; }
+        .subtitle { color: #748078; margin-bottom: 28px; }
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            margin: 18px 0 8px;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d7dfd8;
+            border-radius: 8px;
+            font-size: 15px;
+            background: white;
+        }
+        textarea { min-height: 100px; resize: vertical; }
+        input:focus, select:focus, textarea:focus {
+            outline: 2px solid #a9d7bf;
+            border-color: #26745b;
+        }
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 28px;
+        }
+        button, .cancel {
+            padding: 12px 18px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        button {
+            border: 0;
+            background: #26745b;
+            color: white;
+        }
+        .cancel {
+            background: #f0f3f0;
+            color: #34443a;
+        }
+        .hint { color: #748078; font-size: 12px; margin-top: 7px; }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <a href="{% url 'inicio' %}">← Volver al panel</a>
+
+        <h1>Agendar cita</h1>
+        <p class="subtitle">
+            Selecciona la mascota y completa los datos de la consulta.
+        </p>
+
+        <form method="POST" action="{% url 'citas_agregar' %}">
+            {% csrf_token %}
+
+            <label for="mascota">Mascota</label>
+            <select name="mascota" id="mascota" required>
+                <option value="">Selecciona una mascota</option>
+                {% for mascota in mascotas %}
+                    <option value="{{ mascota.pk }}">
+                        {{ mascota.nombre }} — {{ mascota.especie }}
+                    </option>
+                {% empty %}
+                    <option value="" disabled>
+                        No hay mascotas registradas
+                    </option>
+                {% endfor %}
+            </select>
+            <p class="hint">
+                Si la mascota no aparece, regístrala primero.
+            </p>
+
+            <label for="fecha">Fecha de la cita</label>
+            <input type="date" name="fecha" id="fecha" required>
+
+            <label for="hora">Hora de la cita</label>
+            <input type="time" name="hora" id="hora" required>
+
+            <label for="motivo">Motivo de la consulta</label>
+            <textarea name="motivo" id="motivo"
+                      maxlength="2000"
+                      placeholder="Describe el motivo de la consulta"
+                      required></textarea>
+
+            <div class="actions">
+                <button type="submit">Guardar cita</button>
+                <a class="cancel" href="{% url 'inicio' %}">Cancelar</a>
+            </div>
+        </form>
+    </main>
+</body>
+</html>

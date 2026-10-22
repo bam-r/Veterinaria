@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Huellas Sanas | Panel principal</title>
+
+    <style>
+        :root {
+            --verde: #26745b;
+            --verde-claro: #e8f4ed;
+            --fondo: #f5f7f5;
+            --texto: #26352d;
+            --gris: #748078;
+            --borde: #e3e9e4;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: var(--texto);
+            background: var(--fondo);
+        }
+
+        .sidebar {
+            width: 245px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: white;
+            border-right: 1px solid var(--borde);
+            padding: 28px 18px;
+        }
+
+        .brand {
+            color: var(--verde);
+            font-size: 22px;
+            font-weight: bold;
+            margin: 0 8px 8px;
+        }
+
+        .brand-sub {
+            color: var(--gris);
+            font-size: 12px;
+            margin: 0 8px 35px;
+        }
+
+        .menu-label {
+            color: var(--gris);
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin: 22px 10px 10px;
+        }
+
+        .nav-link {
+            display: block;
+            width: 100%;
+            padding: 13px 12px;
+            margin: 5px 0;
+            border: 0;
+            border-radius: 9px;
+            text-decoration: none;
+            color: #526158;
+            background: transparent;
+            text-align: left;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--verde);
+            background: var(--verde-claro);
+        }
+
+        .main {
+            margin-left: 245px;
+            padding: 35px;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        h1 { font-size: 27px; margin: 0 0 8px; }
+
+        .subtitle {
+            margin: 0;
+            color: var(--gris);
+            font-size: 14px;
+        }
+
+        .button {
+            display: inline-block;
+            background: var(--verde);
+            color: white;
+            padding: 12px 17px;
+            border-radius: 9px;
+            border: none;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .button:hover { background: #1d5d48; }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+
+        .stat-card, .table-card {
+            background: white;
+            border: 1px solid var(--borde);
+            border-radius: 14px;
+            padding: 22px;
+        }
+
+        .stat-label { color: var(--gris); font-size: 13px; }
+
+        .stat-number {
+            display: block;
+            font-size: 30px;
+            font-weight: bold;
+            margin-top: 12px;
+        }
+
+        .table-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        h2 { font-size: 18px; margin: 0; }
+
+        .table-wrap { overflow-x: auto; }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        th {
+            text-align: left;
+            color: var(--gris);
+            background: #f8faf8;
+            font-weight: 600;
+        }
+
+        th, td {
+            padding: 15px 13px;
+            border-bottom: 1px solid var(--borde);
+        }
+
+        tbody tr:last-child td { border-bottom: 0; }
+
+        .status {
+            display: inline-block;
+            padding: 6px 9px;
+            border-radius: 20px;
+            background: var(--verde-claro);
+            color: var(--verde);
+            font-size: 12px;
+        }
+
+        .message {
+            color: var(--gris);
+            text-align: center;
+            padding: 30px;
+        }
+
+        @media (max-width: 720px) {
+            .sidebar {
+                position: static;
+                width: 100%;
+                height: auto;
+                padding: 18px;
+                border-right: none;
+                border-bottom: 1px solid var(--borde);
+            }
+
+            .brand-sub { margin-bottom: 15px; }
+            .menu-label { margin-top: 12px; }
+            .main { margin-left: 0; padding: 20px 14px; }
+            .stats { grid-template-columns: 1fr; }
+            h1 { font-size: 23px; }
+        }
+    </style>
+</head>
+<body>
+
+<aside class="sidebar">
+    <div class="brand">🐾 Huellas Sanas</div>
+    <p class="brand-sub">Sistema de gestión veterinaria</p>
+
+    <div class="menu-label">Principal</div>
+    <button class="nav-link active" id="btn-inicio"
+            onclick="mostrarInicio()">⌂ &nbsp; Inicio</button>
+
+    <div class="menu-label">Administración</div>
+    <button class="nav-link" id="btn-mascotas"
+            onclick="cargarMascotas()">🐕 &nbsp; Mascotas</button>
+    <button class="nav-link" id="btn-citas"
+            onclick="cargarCitas()">▦ &nbsp; Citas</button>
+
+    <div class="menu-label">Acciones</div>
+    <a class="nav-link" href="{% url 'mascotas_agregar' %}">
+        + &nbsp; Agregar mascota
+    </a>
+    <a class="nav-link" href="{% url 'citas_agregar' %}">
+        + &nbsp; Agendar cita
+    </a>
+</aside>
+
+<main class="main">
+    <header class="topbar">
+        <div>
+            <h1 id="titulo">Panel principal</h1>
+            <p class="subtitle" id="descripcion">
+                Bienvenido al sistema de gestión veterinaria.
+            </p>
+        </div>
+        <a class="button" id="accion-principal"
+           href="{% url 'mascotas_agregar' %}">+ Nueva mascota</a>
+    </header>
+
+    <section class="stats">
+        <article class="stat-card">
+            <span class="stat-label">Mascotas registradas</span>
+            <span class="stat-number" id="total-mascotas">—</span>
+        </article>
+        <article class="stat-card">
+            <span class="stat-label">Citas registradas</span>
+            <span class="stat-number" id="total-citas">—</span>
+        </article>
+    </section>
+
+    <section class="table-card">
+        <div class="table-heading">
+            <h2 id="titulo-tabla">Últimos registros</h2>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead id="encabezado"></thead>
+                <tbody id="contenido">
+                    <tr><td class="message">Cargando información...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<script>
+    const URL_MASCOTAS = "{% url 'obtener_mascotas' %}";
+    const URL_CITAS = "{% url 'obtener_citas' %}";
+
+    const encabezado = document.getElementById("encabezado");
+    const contenido = document.getElementById("contenido");
+
+    let mascotasGuardadas = [];
+    let citasGuardadas = [];
+
+    function activarBoton(id) {
+        document.querySelectorAll(".nav-link").forEach(b => {
+            b.classList.remove("active");
+        });
+        document.getElementById(id).classList.add("active");
+    }
+
+    async function obtenerDatos(url) {
+        const respuesta = await fetch(url);
+        if (!respuesta.ok) throw new Error("No se pudieron cargar los datos");
+        return await respuesta.json();
+    }
+
+    function celda(valor) {
+        const td = document.createElement("td");
+        td.textContent = valor ?? "—";
+        return td;
+    }
+
+    function dibujarTabla(columnas, filas) {
+        encabezado.replaceChildren();
+        contenido.replaceChildren();
+
+        const trHead = document.createElement("tr");
+        columnas.forEach(col => {
+            const th = document.createElement("th");
+            th.textContent = col;
+            trHead.appendChild(th);
+        });
+        encabezado.appendChild(trHead);
+
+        if (!filas.length) {
+            const tr = document.createElement("tr");
+            const td = celda("No hay registros disponibles.");
+            td.colSpan = columnas.length;
+            td.className = "message";
+            tr.appendChild(td);
+            contenido.appendChild(tr);
+            return;
+        }
+
+        filas.forEach(fila => {
+            const tr = document.createElement("tr");
+            fila.forEach(valor => tr.appendChild(celda(valor)));
+            contenido.appendChild(tr);
+        });
+    }
+
+    async function cargarResumen() {
+        try {
+            [mascotasGuardadas, citasGuardadas] = await Promise.all([
+                obtenerDatos(URL_MASCOTAS),
+                obtenerDatos(URL_CITAS)
+            ]);
+
+            document.getElementById("total-mascotas").textContent =
+                mascotasGuardadas.length;
+            document.getElementById("total-citas").textContent =
+                citasGuardadas.length;
+        } catch (error) {
+            console.error(error);
+            document.getElementById("descripcion").textContent =
+                "No se pudo cargar el resumen. Comprueba el servidor.";
+        }
+    }
+
+    function mostrarInicio() {
+        activarBoton("btn-inicio");
+        document.getElementById("titulo").textContent = "Panel principal";
+        document.getElementById("descripcion").textContent =
+            "Bienvenido al sistema de gestión veterinaria.";
+        document.getElementById("titulo-tabla").textContent =
+            "Citas registradas";
+        document.getElementById("accion-principal").href =
+            "{% url 'citas_agregar' %}";
+        document.getElementById("accion-principal").textContent =
+            "+ Nueva cita";
+    
+        dibujarTabla(
+            ["Mascota (ID)", "Fecha", "Hora", "Motivo"],
+            citasGuardadas.map(c => [
+                c.mascota_id, c.fecha, c.hora, c.motivo
+            ])
+        );
+    }
+
+    async function cargarMascotas() {
+        activarBoton("btn-mascotas");
+        document.getElementById("titulo").textContent = "Mascotas";
+        document.getElementById("descripcion").textContent =
+            "Consulta las mascotas registradas.";
+        document.getElementById("titulo-tabla").textContent =
+            "Listado de mascotas";
+        document.getElementById("accion-principal").href =
+            "{% url 'mascotas_agregar' %}";
+        document.getElementById("accion-principal").textContent =
+            "+ Nueva mascota";
+
+        try {
+            mascotasGuardadas = await obtenerDatos(URL_MASCOTAS);
+            await cargarResumen();
+            dibujarTabla(
+                ["Nombre", "Especie", "Raza", "Dueño"],
+                mascotasGuardadas.map(m => [
+                    m.nombre, m.especie, m.raza, m.dueño
+                ])
+            );
+        } catch (error) {
+            mostrarError();
+        }
+    }
+
+    async function cargarCitas() {
+        activarBoton("btn-citas");
+        document.getElementById("titulo").textContent = "Citas";
+        document.getElementById("descripcion").textContent =
+            "Consulta las citas veterinarias.";
+        document.getElementById("titulo-tabla").textContent =
+            "Listado de citas";
+        document.getElementById("accion-principal").href =
+            "{% url 'citas_agregar' %}";
+        document.getElementById("accion-principal").textContent =
+            "+ Nueva cita";
+
+        try {
+            citasGuardadas = await obtenerDatos(URL_CITAS);
+            await cargarResumen();
+
+            dibujarTabla(
+                ["Mascota (ID)", "Fecha", "Hora", "Motivo"],
+                citasGuardadas.map(c => [
+                    c.mascota_id, c.fecha, c.hora, c.motivo
+                ])
+            );
+        } catch (error) {
+            mostrarError();
+        }
+    }
+
+    function mostrarError() {
+        dibujarTabla(["Información"], [
+            ["No se pudieron cargar los datos. Inténtalo de nuevo."]
+        ]);
+    }
+
+    async function iniciar() {
+        await cargarResumen();
+        mostrarInicio();
+    }
+
+    iniciar();
+</script>
+
+</body>
+</html>

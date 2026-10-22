@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from .models import Cita, Mascota
 
 def inicio(request):
-    return render(request, 'gestion/inicio.html')
+    return render(request, 'huellasSanas/inicio.html')
 
 def obtener_citas(request):
     citas = list( Cita.objects.values())
@@ -22,7 +22,7 @@ def mascotas_agregar(request):
         raza= request.POST.get('raza')
         dueño= request.POST.get('dueño')
         
-        Mascota.objetcs.create(
+        Mascota.objects.create(
             nombre=nombre,
             especie=especie,
             raza=raza,
@@ -30,6 +30,7 @@ def mascotas_agregar(request):
         )
         
         return redirect('inicio')
+    return render(request, 'huellasSanas/mascotas_agregar.html')
 
 def citas_agregar(request):
     if request.method == 'POST':
@@ -51,6 +52,6 @@ def citas_agregar(request):
 
     return render(
         request,
-        'gestion/citas_agregar.html',
+        'huellasSanas/citas_agregar.html',
         {'mascotas': mascotas}
     )
