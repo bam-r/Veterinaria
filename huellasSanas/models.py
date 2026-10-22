@@ -9,7 +9,7 @@ class Mascota(models.Model):
 class Cita(models.Model):
     mascota= models.ForeignKey(Mascota, on_delete=models.CASCADE,)
     fecha=models.DateField()
-    hora=models.DateTimeField()
+    hora=models.TimeField()
     motivo=models.TextField()
     estado= [
         "pendiente",
