@@ -353,12 +353,21 @@
             "{% url 'citas_agregar' %}";
         document.getElementById("accion-principal").textContent =
             "+ Nueva cita";
-    
+
         dibujarTabla(
-            ["Mascota (ID)", "Fecha", "Hora", "Motivo"],
-            citasGuardadas.map(c => [
-                c.mascota_id, c.fecha, c.hora, c.motivo
-            ])
+            ["Mascota", "Fecha", "Hora", "Motivo"],
+            citasGuardadas.map(c => {
+                const mascota = mascotasGuardadas.find(
+                    m => String(m.id) === String(c.mascota_id)
+                );
+            
+                return [
+                    mascota ? mascota.nombre : "Mascota no encontrada",
+                    c.fecha,
+                    c.hora,
+                    c.motivo
+                ];
+            })
         );
     }
 
@@ -405,10 +414,19 @@
             await cargarResumen();
 
             dibujarTabla(
-                ["Mascota (ID)", "Fecha", "Hora", "Motivo"],
-                citasGuardadas.map(c => [
-                    c.mascota_id, c.fecha, c.hora, c.motivo
-                ])
+                ["Mascota", "Fecha", "Hora", "Motivo"],
+                citasGuardadas.map(c => {
+                    const mascota = mascotasGuardadas.find(
+                        m => String(m.id) === String(c.mascota_id)
+                    );
+                
+                    return [
+                        mascota ? mascota.nombre : "Mascota no encontrada",
+                        c.fecha,
+                        c.hora,
+                        c.motivo
+                    ];
+                })
             );
         } catch (error) {
             mostrarError();
